@@ -1,19 +1,25 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:app_buttons/core/button_settings.dart';
-import 'package:app_buttons/core/button_theme_controller.dart';
+import 'package:app_buttons/src/core/button_settings.dart';
+import 'package:app_buttons/src/core/button_theme_controller.dart';
 import 'package:flutter/material.dart';
 
-
-class AppIconButton extends StatelessWidget {
+class AppOutlineButton extends StatelessWidget {
+  final String? label;
   final IconData? icon;
   final Widget? child;
   final FutureOr<void> Function()? onTap;
   final ButtonSettings? settings;
-  final bool enableBorder;
-  final ShapeBorder? shape; // borderRadius will be handle from shape
-  const AppIconButton({super.key, this.icon, this.child, this.settings, this.onTap, this.enableBorder = false, this.shape});
+
+  const AppOutlineButton({
+    super.key,
+    this.label,
+    this.icon,
+    this.child,
+    this.onTap,
+    this.settings,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +61,20 @@ class AppIconButton extends StatelessWidget {
                         ? mergedSettings.disableForegroundColor
                         : mergedSettings.foregroundColor,
                   ),
-
+                if (icon != null) const SizedBox(width: 8),
+                Text(
+                  label ?? '',
+                  style: settings?.style?.copyWith(
+                    color: onTap == null
+                        ? mergedSettings.disableForegroundColor
+                        : null,
+                  ) ??
+                      mergedSettings.style?.copyWith(
+                        color: onTap == null
+                            ? mergedSettings.disableForegroundColor
+                            : mergedSettings.foregroundColor,
+                      ),
+                ),
               ],
             );
 
@@ -64,29 +83,30 @@ class AppIconButton extends StatelessWidget {
           child: Padding(
             padding: mergedSettings.margin ?? EdgeInsets.zero,
             child: Stack(
-              alignment: AlignmentDirectional.center,
+              alignment: AlignmentDirectional.center  ,
               children: [
-                Card(
-                  elevation: mergedSettings.elevation,
-                    margin: EdgeInsets.zero,
-                    shape: shape,
-                    color: onTap == null
-                        ? mergedSettings.disableBackgroundColor
-                        : mergedSettings.backgroundColor,
-                    child: InkWell(
-                      customBorder: shape,
-                      splashColor: mergedSettings.splashColor,
-                      borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
-                      onTap: onTap == null ? null : handleTap,
-                      child: Padding(
-                        padding: mergedSettings.contentPadding ?? EdgeInsets.zero,
-                        child: AnimatedOpacity(
-                          opacity: isLoading ? 0.0 : 1.0,
-                          duration: const Duration(milliseconds: 200),
-                          child: buttonContent,
+                InkWell(
+                  splashColor: mergedSettings.splashColor,
+                  borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
+                  onTap: onTap == null ? null : handleTap,
+                  child: Ink(
+                      padding: mergedSettings.contentPadding,
+                      height: mergedSettings.takeFullSpace == true ? mergedSettings.height : null,
+                      width: mergedSettings.takeFullSpace == true ? mergedSettings.width : null,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
+                        border: Border.all(
+                          color: (onTap == null
+                              ? mergedSettings.disableBackgroundColor
+                              : mergedSettings.borderColor) ?? Colors.black
                         ),
                       ),
-                    )
+                      child: AnimatedOpacity(
+                        opacity: isLoading ? 0.0 : 1.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: buttonContent,
+                      )
+                  ),
                 ),
                 if(isLoading)
                   SizedBox.square(

@@ -22,9 +22,12 @@
 
 library app_buttons;
 
-export 'core/button_settings.dart';
-export 'core/button_theme_controller.dart';
-export 'buttons/app_primary_button.dart';
-export 'buttons/app_outline_button.dart';
-export 'buttons/app_text_button.dart';
-export 'buttons/app_icon_button.dart';
+
+export 'src/buttons/app_primary_button.dart';
+export 'src/buttons/app_outline_button.dart';
+export 'src/buttons/app_text_button.dart';
+export 'src/buttons/app_icon_button.dart';
+export 'src/core/button_settings.dart';
+export 'src/core/button_theme_controller.dart';
+
+

@@ -1,20 +1,19 @@
+
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:app_buttons/core/button_settings.dart';
-import 'package:app_buttons/core/button_theme_controller.dart';
+import 'package:app_buttons/src/core/button_settings.dart';
+import 'package:app_buttons/src/core/button_theme_controller.dart';
 import 'package:flutter/material.dart';
 
-
-
-class AppTextButton extends StatelessWidget {
+class AppPrimaryButton extends StatelessWidget {
   final String? label;
   final IconData? icon;
   final Widget? child;
   final FutureOr<void> Function()? onTap;
   final ButtonSettings? settings;
 
-  const AppTextButton({
+  const AppPrimaryButton({
     super.key,
     this.label,
     this.icon,
@@ -85,34 +84,45 @@ class AppTextButton extends StatelessWidget {
           child: Padding(
             padding: mergedSettings.margin ?? EdgeInsets.zero,
             child: Stack(
-              alignment: AlignmentDirectional.center  ,
+              alignment: AlignmentDirectional.center,
               children: [
                 InkWell(
                   splashColor: mergedSettings.splashColor,
                   borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
                   onTap: onTap == null ? null : handleTap,
                   child: Ink(
-                      padding: mergedSettings.contentPadding,
-                      height: mergedSettings.takeFullSpace == true ? mergedSettings.height : null,
-                      width: mergedSettings.takeFullSpace == true ? mergedSettings.width : null,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
-                      ),
-                      child: AnimatedOpacity(
-                        opacity: isLoading ? 0.0 : 1.0,
-                        duration: const Duration(milliseconds: 200),
-                        child: buttonContent,
-                      )
+                    padding: mergedSettings.contentPadding,
+                    height: mergedSettings.takeFullSpace == true ? mergedSettings.height : null,
+                    width: mergedSettings.takeFullSpace == true ? mergedSettings.width : null,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(mergedSettings.borderRadius ?? 0),
+                      color: onTap == null
+                          ? mergedSettings.disableBackgroundColor
+                          : mergedSettings.backgroundColor,
+                      boxShadow: [
+                        if ((mergedSettings.elevation ?? 0) > 0)
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.4),
+                            blurRadius: mergedSettings.elevation ?? 4,
+                            offset: Offset(0, (mergedSettings.elevation ?? 4) / 2),
+                          ),
+                      ],
+                    ),
+                    child: AnimatedOpacity(
+                      opacity: isLoading ? 0.0 : 1.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: buttonContent,
+                    )
                   ),
                 ),
                 if(isLoading)
-                  SizedBox.square(
-                    dimension: settings?.loaderSize ?? (storedSize == null ? 20 : storedSize!.height + ((mergedSettings.contentPadding?.vertical ?? 0) /2)),
-                    child: CircularProgressIndicator(
-                      strokeWidth: mergedSettings.loaderWidth ?? 2,
-                      color: mergedSettings.foregroundColor,
-                    ),
-                  )
+                SizedBox.square(
+                  dimension: settings?.loaderSize ?? (storedSize == null ? 20 : storedSize!.height + ((mergedSettings.contentPadding?.vertical ?? 0) /2)),
+                  child: CircularProgressIndicator(
+                    strokeWidth: mergedSettings.loaderWidth ?? 2,
+                    color: mergedSettings.foregroundColor,
+                  ),
+                )
               ],
             ),
           ),
