@@ -9,8 +9,13 @@ description: |
    - 🖥️ Shared base properties + type-specific extensions
    - 🔄 Built-in loading states
    - ✅ Null-safe with immutable settings
-version: 1.0.0
+
 homepage: https://github.com/CallofCoding/app_buttons.git
+
+version: 1.0.1
+#  current tag : v1.0.0
+#  git tag v1.0.0        # copy and paste command
+#  git push origin v1.0.0
 
 environment:
   sdk: '>=3.5.0-152.0.dev <4.0.0'

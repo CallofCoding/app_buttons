@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:app_buttons/core/button_settings.dart';
+import 'package:app_buttons/core/button_theme_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../core/button_settings.dart';
-import '../core/button_theme_controller.dart';
+
 
 class AppOutlineButton extends StatelessWidget {
   final String? label;
